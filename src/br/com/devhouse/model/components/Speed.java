@@ -8,15 +8,15 @@ public class Speed {
 	public static final int DIRECTION_UP	= -1;
 	public static final int DIRECTION_DOWN	= 1;
 
-	private float xv = 1;	// velocity value on the X axis
-	private float yv = 1;	// velocity value on the Y axis
+	private float xv = 2;	// velocity value on the X axis
+	private float yv = 2;	// velocity value on the Y axis
 
 	private int xDirection = DIRECTION_RIGHT;
 	private int yDirection = DIRECTION_DOWN;
 
 	public Speed() {
-		this.xv = 1;
-		this.yv = 1;
+		this.xv = 2;
+		this.yv = 2;
 	}
 
 	public Speed(float xv, float yv) {
