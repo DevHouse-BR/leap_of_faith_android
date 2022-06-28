@@ -1,6 +1,7 @@
 package br.com.devhouse;
 
 import br.com.devhouse.model.Ninja;
+import br.com.devhouse.model.components.Speed;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ public class MainGamePanel extends SurfaceView implements Callback {
 	private MainThread thread;
 	
 	private Ninja ninja;
+	private Ninja inimigo;
 
 	public MainGamePanel(Context context) {
 		super(context);
@@ -28,6 +30,11 @@ public class MainGamePanel extends SurfaceView implements Callback {
 		
 		//carrega o ninja
 		ninja = new Ninja(BitmapFactory.decodeResource(getResources(), R.drawable.ninja_01), 100, 100);
+		
+		//carrega o ninja
+		inimigo = new Ninja(BitmapFactory.decodeResource(getResources(), R.drawable.armored_monster), 900, 100);
+		inimigo.getSpeed().setXv(5);
+		inimigo.getSpeed().setYv(5);
 		
 		//Cria o processo de loop principal
 		thread = new MainThread(getHolder(), this);
@@ -101,12 +108,37 @@ public class MainGamePanel extends SurfaceView implements Callback {
 		return true;
 	}
 
-	@Override
-	protected void onDraw(Canvas canvas){
+	protected void render(Canvas canvas){
 		canvas.drawColor(Color.BLACK);
 		
-		canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.fundo_noite), 0, -1500, null);
+		//canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.fundo_noite), 0, -1500, null);
+		
+		inimigo.draw(canvas);
 				
 		ninja.draw(canvas);
+	}
+	
+	public void update(){
+		//verifica colisao com a parede da direita se estiver indo para a direita
+		if((inimigo.getSpeed().getxDirection() == Speed.DIRECTION_RIGHT) && (inimigo.getX() + inimigo.getBitmap().getWidth() / 2 >= getWidth())){
+			inimigo.getSpeed().toggleXDirection();
+		}
+		
+		//verifica colisao com a parede da esquerda se estiver indo para a esquerda
+		if((inimigo.getSpeed().getxDirection() == Speed.DIRECTION_LEFT) && (inimigo.getX() - inimigo.getBitmap().getWidth() / 2 <= 0)){
+			inimigo.getSpeed().toggleXDirection();
+		}
+		
+		//verifica colisao com a parede inferior se estiver indo para baixo
+		if((inimigo.getSpeed().getyDirection() == Speed.DIRECTION_DOWN) && (inimigo.getY() + inimigo.getBitmap().getHeight() / 2 >= getHeight())){
+			inimigo.getSpeed().toggleYDirection();
+		}
+		
+		//verifica colisao com a parede superior se estiver indo para cima
+		if((inimigo.getSpeed().getyDirection() == Speed.DIRECTION_UP) && (inimigo.getY() - inimigo.getBitmap().getHeight() / 2 <= 0)){
+			inimigo.getSpeed().toggleYDirection();
+		}
+		
+		inimigo.update();
 	}
 }

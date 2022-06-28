@@ -1,5 +1,6 @@
 package br.com.devhouse.model;
 
+import br.com.devhouse.model.components.Speed;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
@@ -9,11 +10,13 @@ public class Ninja {
 	private int x;
 	private int y;
 	private boolean touched;
+	private Speed speed;
 	
 	public Ninja(Bitmap bitmap, int x, int y){
 		this.bitmap = bitmap;
 		this.x = x;
 		this.y = y;
+		this.speed = new Speed(); 
 	}
 	
 	public Bitmap getBitmap(){
@@ -40,6 +43,14 @@ public class Ninja {
 		this.y = y;
 	}
 	
+	public Speed getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(Speed speed) {
+		this.speed = speed;
+	}
+
 	public boolean isTouched(){
 		return touched;
 	}
@@ -61,5 +72,10 @@ public class Ninja {
 		}
 		
 		setTouched(false);
+	}
+	
+	public void update(){
+		x += (speed.getXv() * speed.getxDirection());
+		y += (speed.getYv() * speed.getyDirection());
 	}
 }
